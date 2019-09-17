@@ -1,0 +1,31 @@
+{
+    "name": "vesperabr/laravel-form",
+    "description": "Laravel Form builder with Monalisa support.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ricardo Monteiro",
+            "email": "ricardo.monteiro@vespera.com.br"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vespera\\LaravelForm\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vespera\\LaravelForm\\FormServiceProvider"
+            ],
+            "aliases": {
+                "Form": "Vespera\\LaravelForm\\FormFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
