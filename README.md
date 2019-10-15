@@ -23,7 +23,6 @@ After install, you can use any of bellow directives in your blade files.
 
 ## Blade directives avaiable
 
-### Opening a form
 - f_open($action, $method, $model, $attributes)
 - f_close()
 - f_hidden($name, $attributes)
