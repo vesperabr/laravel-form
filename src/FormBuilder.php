@@ -363,14 +363,21 @@ class FormBuilder
         $name_without_brackets = str_replace('[]', '', $name);
         $items = collect($items);
 
-        if (count($checked)) {
-            $checked = $this->_getValuesAttribute($name_without_brackets, ['value' => $checked]);
+        $attributes = count($checked) ? ['value' => $checked] : [];
+        $multi = substr($name, -2, 2) == '[]' ? true : false;
+
+        if ($multi) {
+            $checked = $this->_getValuesAttribute($name_without_brackets, $attributes);
         } else {
-            $checked = $this->_getValuesAttribute($name_without_brackets, []);
+            $checked = $this->_getValueAttribute($name_without_brackets, $attributes);
         }
 
         foreach ($items as $key => $value) {
-            $c = (in_array($key, $checked)) ? 'checked' : '';
+            if ($multi) {
+                $c = (in_array($key, $checked)) ? 'checked' : '';
+            } else {
+                $c = ($key == $checked) ? 'checked' : '';
+            }
             $fields .= "<label><input type='checkbox' name='$name' value='$key' $c> $value</label>";
         }
 
@@ -529,8 +536,13 @@ class FormBuilder
         }
 
         // 3. Does we have a value in the model?
-        if ($this->model && $value = $this->model->get($name . '_dropdown')) {
+        if ($this->model && $value = $this->model->get($name)) {
             $value = collect($value)->toArray();
+
+            if (\Arr::isAssoc($value)) {
+                $value = array_keys($value);
+            }
+
             return $value;
         }
 
