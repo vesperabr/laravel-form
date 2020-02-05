@@ -282,7 +282,7 @@ class FormBuilder
         $options = '';
 
         foreach ($items as $key => $value) {
-            if ($key == $selected) {
+            if ($key == $selected && $selected !== '') {
                 $options .= "<option value='$key' selected>$value</option>";
             } else {
                 $options .= "<option value='$key'>$value</option>";
