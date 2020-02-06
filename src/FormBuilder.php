@@ -4,8 +4,9 @@ namespace Vespera\LaravelForm;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Http\Request;
-use Illuminate\Support\HtmlString;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Factory;
 
 class FormBuilder
@@ -13,6 +14,7 @@ class FormBuilder
     protected $request;
     protected $errors;
     protected $model;
+    protected $modelOriginal;
 
     protected $csrfToken;
     protected $spoofedMethods = ['DELETE', 'PATCH', 'PUT'];
@@ -54,6 +56,7 @@ class FormBuilder
         // Set model property as a \Illuminate\Support\Collection
         if ($model) {
             $this->model = collect($model);
+            $this->modelOriginal = $model;
         }
 
         // Get things to be appended to the form
@@ -537,9 +540,18 @@ class FormBuilder
 
         // 3. Does we have a value in the model?
         if ($this->model && $value = $this->model->get($name)) {
+
+            // Descubro se o item é uma instancia de um model ------
+            // Se for faço o pluck pela PK do model original -------
+            $itens = $this->modelOriginal->{$name};
+            if (gettype($itens[0]) == 'object' && method_exists($itens[0], 'getKeyName')) {
+                $pk = $itens[0]->getKeyName();
+                $value = $itens->pluck($pk);
+            }
+
             $value = collect($value)->toArray();
 
-            if (\Arr::isAssoc($value)) {
+            if (Arr::isAssoc($value)) {
                 $value = array_keys($value);
             }
 
