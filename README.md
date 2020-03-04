@@ -10,6 +10,16 @@ $ composer require vesperabr/laravel-form
 
 The package will automatically register its service provider.
 
+## Configuration
+
+If you want, you could enable Monalisa On Send component to prevent double click on form buttons and also put a nice loader on it.
+
+To do that, you just need to publish the config file and then change the `enable_onsend` parameter to true.
+
+```bash
+$ php artisan vendor:publish
+```
+
 ## Usage
 
 After install, you can use any of bellow directives in your blade files.

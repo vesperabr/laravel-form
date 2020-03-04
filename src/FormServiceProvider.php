@@ -22,6 +22,12 @@ class FormServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // Publishes the package resources
+        $this->publishes([
+            __DIR__.'/config/form.php' => config_path('form.php'),
+        ]);
+
+        // Load the directives
         foreach ($this->directives as $directive) {
             Blade::directive($directive, function($expression) use ($directive) {
                 return "<?php echo Form::$directive($expression); ?>";

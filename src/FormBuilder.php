@@ -410,8 +410,11 @@ class FormBuilder
 
     public function f_buttons(string $submit_label = 'Salvar', string $cancel_link = '')
     {
+        $enable_onsend = config('form.enable_onsend', false);
+        $onsend = $enable_onsend ? 'data-component="onsend"' : '';
+
         $html = "<div class='form-buttons'><div>";
-        $html .= "<button class='Button _primary' type='submit'>$submit_label</button>";
+        $html .= "<button class='Button _primary' type='submit' $onsend>$submit_label</button>";
 
         if (!empty($cancel_link)) {
             $html .= "<a href='$cancel_link' class='Button _secondary _outline'>Cancelar</a>";
