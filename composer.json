@@ -20,7 +20,10 @@
         "laravel": {
             "providers": [
                 "Vespera\\LaravelForm\\FormServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Form": "Vespera\\LaravelForm\\FormFacade"
+            }
         }
     },
     "minimum-stability": "dev",
