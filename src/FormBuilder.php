@@ -145,7 +145,7 @@ class FormBuilder
 
     public function f_tel(string $name, string $label = '', bool $required = false, array $attributes = [])
     {
-        $data['data-mask-name'] = 'tel';
+        $attributes['data-mask-name'] = 'tel';
         return $this->f_input('text', $name, $label, $required, $attributes);
     }
 
