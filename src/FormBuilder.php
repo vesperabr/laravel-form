@@ -89,6 +89,8 @@ class FormBuilder
      */
     public function f_input(string $type = 'text', string $name = '', string $label = '', bool $required = false, array $attributes = [])
     {
+        $dotName = str_replace(['[', ']'], ['.', ''], $name);
+
         $default = [
             'type'     => $type,
             'name'     => $name,
@@ -97,7 +99,7 @@ class FormBuilder
         ];
 
         // Check for errors
-        if ($this->errors->has($name)) {
+        if ($this->errors->has($dotName)) {
             $default['class'][] = '_error';
         }
 
@@ -501,10 +503,16 @@ class FormBuilder
      */
     protected function _getValueAttribute(string $name, array $attributes)
     {
+        if ($name === '_method') {
+            return;
+        }
+
+        // Transform field name to dot notation
+        $name = str_replace(['[', ']'], ['.', ''], $name);
+
         // 1. Does we have a value in the old flashdata?
-        $old = $this->request->old($name);
-        if (! is_null($old) && $name !== '_method') {
-            return $old;
+        if (\Arr::has($this->request->old(), $name)) {
+            return $this->request->old($name);
         }
 
         // 2. Does we have a value in the attributes param?
@@ -513,8 +521,8 @@ class FormBuilder
         }
 
         // 3. Does we have a value in the model?
-        if ($this->model && $this->model->get($name)) {
-            return $this->model->get($name);
+        if ($this->model) {
+            return \Arr::get($this->model, $name);
         }
 
         // 4. We doesn't have any value, return null
