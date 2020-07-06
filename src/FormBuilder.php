@@ -26,7 +26,7 @@ class FormBuilder
      * @param Factory $view
      * @param string  $csrfToken
      */
-    public function __construct(Request $request, Factory $view, string $csrfToken)
+    public function __construct(Request $request, Factory $view, string $csrfToken = '')
     {
         $this->request   = $request;
         $this->errors    = $view->shared('errors');
@@ -511,7 +511,7 @@ class FormBuilder
         $name = str_replace(['[', ']'], ['.', ''], $name);
 
         // 1. Does we have a value in the old flashdata?
-        if (\Arr::has($this->request->old(), $name)) {
+        if (Arr::has($this->request->old(), $name)) {
             return $this->request->old($name);
         }
 
@@ -522,7 +522,7 @@ class FormBuilder
 
         // 3. Does we have a value in the model?
         if ($this->model) {
-            return \Arr::get($this->model, $name);
+            return Arr::get($this->model, $name);
         }
 
         // 4. We doesn't have any value, return null
