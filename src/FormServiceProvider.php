@@ -16,7 +16,7 @@ class FormServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('form', function($app) {
-            return new FormBuilder($app['request'], $app['view'], $app['session.store']->token());
+            return new FormBuilder($app['request'], $app['view'], $app['session.store']->token() ?? '');
         });
     }
 
